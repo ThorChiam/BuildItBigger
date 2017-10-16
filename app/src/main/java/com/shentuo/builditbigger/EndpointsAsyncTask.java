@@ -9,10 +9,13 @@ import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.shentuo.builditbigger.backend.myApi.MyApi;
+import com.shentuo.builditbigger.backend.myApi.model.MyJoke;
 import com.shentuo.builditbigger.backend.myApi.model.MyJokeCollection;
+import com.shentuo.mylibrary.Constants;
 import com.shentuo.mylibrary.DisplayActivity;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by ShentuoZhan on 13/6/17.
@@ -53,14 +56,14 @@ public class EndpointsAsyncTask extends AsyncTask<Context, Void, MyJokeCollectio
 
     @Override
     protected void onPostExecute(MyJokeCollection result) {
-//        Toast.makeText(context, result.size() + ":" + result.getItems().get(0).getJokeContent(), Toast.LENGTH_LONG);
-        try {
-            Intent intent = new Intent(context, DisplayActivity.class);
-            intent.putExtra("MY_JOKES", result.toPrettyString());
-            context.startActivity(intent);
-//            Toast.makeText(context, result.toPrettyString(), Toast.LENGTH_LONG).show();
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
+        Intent intent = new Intent(context, DisplayActivity.class);
+        intent.putExtra(Constants.MY_JOKE_KEY, pickAJokeToTell(result));
+        context.startActivity(intent);
+    }
+
+    private String pickAJokeToTell(MyJokeCollection jokeList) {
+        List<MyJoke> jokes = jokeList.getItems();
+        int randomNumber = (int) (Math.random() * jokes.size());
+        return jokes.get(randomNumber).getJokeContent();
     }
 }
