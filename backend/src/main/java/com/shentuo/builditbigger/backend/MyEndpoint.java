@@ -30,16 +30,8 @@ import javax.inject.Named;
 public class MyEndpoint {
 
     /**
-     * A simple endpoint method that takes a name and says Hi back
+     * A simple endpoint method that retrieves list of jokes and send back
      */
-    @ApiMethod(name = "sayHi")
-    public MyJoke sayHi(@Named("name") String name) {
-        MyJoke response = new MyJoke();
-        response.setJokeContent("Hi, " + name);
-
-        return response;
-    }
-
     @ApiMethod(name = "retrieveJokes")
     public List<MyJoke> retrieveJokes() {
         MyJoke joke = new MyJoke();
