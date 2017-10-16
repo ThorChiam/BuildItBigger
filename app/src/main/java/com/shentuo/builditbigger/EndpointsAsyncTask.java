@@ -2,7 +2,6 @@ package com.shentuo.builditbigger;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Pair;
 import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -10,19 +9,22 @@ import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.shentuo.builditbigger.backend.myApi.MyApi;
+import com.shentuo.builditbigger.backend.myApi.model.MyJoke;
+import com.shentuo.builditbigger.backend.myApi.model.MyJokeCollection;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by ShentuoZhan on 13/6/17.
  */
 
-public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
+public class EndpointsAsyncTask extends AsyncTask<Context, Void, MyJokeCollection> {
     private static MyApi myApiService = null;
     private Context context;
 
     @Override
-    protected String doInBackground(Pair<Context, String>... params) {
+    protected MyJokeCollection doInBackground(Context... params) {
         if (myApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
@@ -41,18 +43,18 @@ public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, S
             myApiService = builder.build();
         }
 
-        context = params[0].first;
-        String name = params[0].second;
+        context = params[0];
 
         try {
-            return myApiService.sayHi(name).execute().getData();
+            return myApiService.retrieveJokes().execute();
         } catch (IOException e) {
-            return e.getMessage();
+            return null;
         }
     }
 
     @Override
-    protected void onPostExecute(String result) {
-        Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+    protected void onPostExecute(MyJokeCollection result) {
+        List<MyJoke> myJokes = result.getItems();
+        Toast.makeText(context, myJokes.get(0).getJokeContent(), Toast.LENGTH_LONG).show();
     }
 }

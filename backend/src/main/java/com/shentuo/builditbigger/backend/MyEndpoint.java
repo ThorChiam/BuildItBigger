@@ -10,6 +10,9 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Named;
 
 /**
@@ -30,11 +33,23 @@ public class MyEndpoint {
      * A simple endpoint method that takes a name and says Hi back
      */
     @ApiMethod(name = "sayHi")
-    public MyBean sayHi(@Named("name") String name) {
-        MyBean response = new MyBean();
-        response.setData("Hi, " + name);
+    public MyJoke sayHi(@Named("name") String name) {
+        MyJoke response = new MyJoke();
+        response.setJokeContent("Hi, " + name);
 
         return response;
+    }
+
+    @ApiMethod(name = "retrieveJokes")
+    public List<MyJoke> retrieveJokes() {
+        MyJoke joke = new MyJoke();
+        joke.setJokeContent("This is the first joke!");
+        MyJoke joke2 = new MyJoke();
+        joke2.setJokeContent("This is the second joke!");
+        List<MyJoke> myJokes = new ArrayList<>();
+        myJokes.add(joke);
+        myJokes.add(joke2);
+        return myJokes;
     }
 
 }
