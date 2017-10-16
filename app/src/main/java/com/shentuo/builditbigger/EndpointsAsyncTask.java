@@ -1,19 +1,18 @@
 package com.shentuo.builditbigger;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.shentuo.builditbigger.backend.myApi.MyApi;
-import com.shentuo.builditbigger.backend.myApi.model.MyJoke;
 import com.shentuo.builditbigger.backend.myApi.model.MyJokeCollection;
+import com.shentuo.mylibrary.DisplayActivity;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by ShentuoZhan on 13/6/17.
@@ -54,7 +53,14 @@ public class EndpointsAsyncTask extends AsyncTask<Context, Void, MyJokeCollectio
 
     @Override
     protected void onPostExecute(MyJokeCollection result) {
-        List<MyJoke> myJokes = result.getItems();
-        Toast.makeText(context, myJokes.get(0).getJokeContent(), Toast.LENGTH_LONG).show();
+//        Toast.makeText(context, result.size() + ":" + result.getItems().get(0).getJokeContent(), Toast.LENGTH_LONG);
+        try {
+            Intent intent = new Intent(context, DisplayActivity.class);
+            intent.putExtra("MY_JOKES", result.toPrettyString());
+            context.startActivity(intent);
+//            Toast.makeText(context, result.toPrettyString(), Toast.LENGTH_LONG).show();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
     }
 }

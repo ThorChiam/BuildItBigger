@@ -9,11 +9,10 @@ package com.shentuo.builditbigger.backend;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.shentuo.jokes.Joker;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Named;
 
 /**
  * An endpoint class we are exposing
@@ -34,14 +33,15 @@ public class MyEndpoint {
      */
     @ApiMethod(name = "retrieveJokes")
     public List<MyJoke> retrieveJokes() {
-        MyJoke joke = new MyJoke();
-        joke.setJokeContent("This is the first joke!");
-        MyJoke joke2 = new MyJoke();
-        joke2.setJokeContent("This is the second joke!");
-        List<MyJoke> myJokes = new ArrayList<>();
-        myJokes.add(joke);
-        myJokes.add(joke2);
-        return myJokes;
+        List<MyJoke> myJokeList = new ArrayList<>();
+
+        Joker joker = new Joker();
+        for (String joke : joker.tellJokes()){
+            MyJoke myJoke = new MyJoke();
+            myJoke.setJokeContent(joke);
+            myJokeList.add(myJoke);
+        }
+        return myJokeList;
     }
 
 }
