@@ -41,6 +41,4 @@ public class MainActivity extends AppCompatActivity {
 //        Toast.makeText(this, "derp", Toast.LENGTH_SHORT).show();
         new EndpointsAsyncTask().execute(this);
     }
-
-
 }

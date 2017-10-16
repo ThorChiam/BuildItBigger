@@ -21,8 +21,24 @@ android {
     dataBinding {
         enabled = true
     }
-}
+    productFlavors {
+        free {
+            applicationId "com.shentuo.builditbigger.free"
+            versionName "1.0-free"
+            buildConfigField "boolean", "PAID_VERSION", "false"
+        }
 
+        paid {
+            applicationId "com.shentuo.builditbigger.paid"
+            versionName "1.0-paid"
+            buildConfigField "boolean", "PAID_VERSION", "true"
+        }
+    }
+}
+configurations {
+    freeDebugCompile
+    freeReleaseCompile
+}
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':javaJokes')
@@ -31,7 +47,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.google.android.gms:play-services-ads:10.2.4'
+    freeDebugCompile 'com.google.android.gms:play-services-ads:10.2.4'
+    freeReleaseCompile 'com.google.android.gms:play-services-ads:10.2.4'
     compile 'com.google.code.findbugs:jsr305:2.0.1'
     compile project(path: ':backend', configuration: 'android-endpoints')
 }
