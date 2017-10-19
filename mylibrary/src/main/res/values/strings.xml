@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">My Library</string>
+    <string name="error_message">Cannot tell jokes now, please try again later!</string>
 </resources>

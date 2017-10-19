@@ -12,7 +12,10 @@ public class DisplayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityDisplayBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_display);
-        String s = getIntent().getStringExtra(Constants.MY_JOKE_KEY);
+        String s = getString(R.string.error_message);
+        if (getIntent().hasExtra(Constants.MY_JOKE_KEY)){
+            s = getIntent().getStringExtra(Constants.MY_JOKE_KEY);
+        }
         binding.jokeContents.setText(s);
     }
 }

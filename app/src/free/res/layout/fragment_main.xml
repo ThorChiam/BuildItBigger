@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.shentuo.builditbigger.FreeActivityFragment">
+    tools:context="com.shentuo.builditbigger.MainActivityFragment">
 
     <TextView
         android:id="@+id/instructions_text_view"
