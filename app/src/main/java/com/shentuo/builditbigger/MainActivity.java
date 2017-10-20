@@ -1,17 +1,22 @@
 package com.shentuo.builditbigger;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+import com.shentuo.builditbigger.databinding.ActivityMainBinding;
+
+public class MainActivity extends AppCompatActivity implements EndpointsAsyncTask.EndpointsAsyncTaskListener{
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        binding.progressBar.setVisibility(View.GONE);
     }
 
 
@@ -38,7 +43,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
-//        Toast.makeText(this, "derp", Toast.LENGTH_SHORT).show();
-        new EndpointsAsyncTask().execute(this);
+        binding.progressBar.setVisibility(View.VISIBLE);
+        new EndpointsAsyncTask(this).execute(this);
+    }
+
+    @Override
+    public void onTaskCompleted() {
+        binding.progressBar.setVisibility(View.GONE);
     }
 }

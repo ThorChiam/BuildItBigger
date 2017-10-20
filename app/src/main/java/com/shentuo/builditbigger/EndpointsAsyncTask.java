@@ -24,6 +24,11 @@ import java.util.List;
 public class EndpointsAsyncTask extends AsyncTask<Context, Void, MyJokeCollection> {
     private static MyApi myApiService = null;
     private Context context;
+    private EndpointsAsyncTaskListener mListener = null;
+
+    public EndpointsAsyncTask(EndpointsAsyncTaskListener listener){
+        mListener = listener;
+    }
 
     @Override
     protected MyJokeCollection doInBackground(Context... params) {
@@ -56,6 +61,7 @@ public class EndpointsAsyncTask extends AsyncTask<Context, Void, MyJokeCollectio
 
     @Override
     protected void onPostExecute(MyJokeCollection result) {
+        mListener.onTaskCompleted();
         Intent intent = new Intent(context, DisplayActivity.class);
         intent.putExtra(Constants.MY_JOKE_KEY, pickAJokeToTell(result));
         context.startActivity(intent);
@@ -65,5 +71,9 @@ public class EndpointsAsyncTask extends AsyncTask<Context, Void, MyJokeCollectio
         List<MyJoke> jokes = jokeList.getItems();
         int randomNumber = (int) (Math.random() * jokes.size());
         return jokes.get(randomNumber).getJokeContent();
+    }
+
+    public interface EndpointsAsyncTaskListener {
+        void onTaskCompleted();
     }
 }
